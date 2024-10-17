@@ -79,7 +79,6 @@ class SealBlockEntity(pos: BlockPos, state: BlockState) : SyncedBlockEntity(Spoo
         if (isOpen()) return
         val level = level ?: return
         if (!level.isClientSide) return
-        if (!checkTimeWest() && !checkTimeEast()) return
         level as ClientLevel
 
         if (Minecraft.getInstance().player!!.distanceToSqr(this.blockPos.center) > 64*64) return
@@ -104,6 +103,15 @@ class SealBlockEntity(pos: BlockPos, state: BlockState) : SyncedBlockEntity(Spoo
 
             addParticle(x, z)
         }
+
+
+    }
+
+    fun renderMoonParticles() {
+        val level = level ?: return
+        if (!level.isClientSide) return
+        if (!checkTimeWest() && !checkTimeEast()) return
+        level as ClientLevel
 
         val windowPos = this.blockPos.offset(
             if (checkTimeWest()) -6 else 6,
@@ -160,10 +168,17 @@ class SealBlockEntity(pos: BlockPos, state: BlockState) : SyncedBlockEntity(Spoo
                             0)
                     )
                 }
+
+                self.renderParticles()
+                self.renderMoonParticles()
             }
 
             if (level.isClientSide && self.checkHackers() && (self.checkTimeEast() || self.checkTimeWest())) {
                 self.renderParticles()
+            }
+
+            if (level.isClientSide && (self.checkTimeEast() || self.checkTimeWest())) {
+                self.renderMoonParticles()
             }
         }
 
