@@ -169,16 +169,18 @@ class SealBlockEntity(pos: BlockPos, state: BlockState) : SyncedBlockEntity(Spoo
                     )
                 }
 
-                self.renderParticles()
-                self.renderMoonParticles()
-            }
+                if (level.isClientSide) {
+                    self.renderParticles()
+                    self.renderMoonParticles()
+                }
+            } else {
+                if (level.isClientSide && self.checkHackers() && (self.checkTimeEast() || self.checkTimeWest())) {
+                    self.renderParticles()
+                }
 
-            if (level.isClientSide && self.checkHackers() && (self.checkTimeEast() || self.checkTimeWest())) {
-                self.renderParticles()
-            }
-
-            if (level.isClientSide && (self.checkTimeEast() || self.checkTimeWest())) {
-                self.renderMoonParticles()
+                if (level.isClientSide && (self.checkTimeEast() || self.checkTimeWest())) {
+                    self.renderMoonParticles()
+                }
             }
         }
 
