@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "entries": [
+    "haunted:abandoned_mineshaft",
+    "haunted:ancient_city",
+    "haunted:buried_treasure",
+    "haunted:desert_pyramid",
+    "haunted:jungle_temple",
+    "haunted:pillager_outpost",
+    "haunted:ruined_portal",
+    "haunted:shipwreck_supply",
+    "haunted:stronghold_library",
+    "haunted:underwater_ruin_small"
+  ]
+}
