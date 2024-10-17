@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.ewoudje.spooky.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "tobedecided.refmap.json",
+  "mixins": [
+    "MixinChunkGenerator",
+    "MixinChunkGeneratorStructureState",
+    "StructureManagerAccessor"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

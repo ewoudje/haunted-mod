@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "haunted:block/side_seal_top",
+    "side": "haunted:block/side_seal",
+    "top": "haunted:block/side_seal_top"
+  }
+}

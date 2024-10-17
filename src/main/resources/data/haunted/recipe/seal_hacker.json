@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "haunted:unsealing",
+  "pattern": [
+    " # ",
+    "XRX",
+    "XRX"
+  ],
+  "key": {
+    "X": {
+      "tag": "c:ingots/iron"
+    },
+    "#": {
+      "item": "haunted:unseal_note"
+    },
+    "R": {
+      "item": "minecraft:redstone_block"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "haunted:seal_hacker"
+  }
+}
