@@ -30,7 +30,7 @@ class StructureSmeller(properties: Properties) : Item(properties) {
         val pos = level.findNearestMapStructure(SMELLY_STRUCTURES, player.onPos, 5000, false)
             ?: return InteractionResultHolder.fail(itemStack)
 
-        renderParticles(level, player.eyePosition, player.forward, pos.toVec3())
+        renderParticles(level, player.eyePosition, Vec3(player.forward.x, 0.0, player.forward.z).normalize(), pos.toVec3())
 
         return InteractionResultHolder.success(itemStack)
     }

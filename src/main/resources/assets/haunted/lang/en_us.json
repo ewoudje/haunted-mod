@@ -5,6 +5,8 @@
   "item.haunted.engraving_tool": "Engraving Tool",
   "item.haunted.unseal_note": "Note of unsealing",
   "item.haunted.seal_smeller": "Seal Smeller",
+  "item.haunted.seal_smeller.lore1": "Might sometimes smell something different",
+  "item.haunted.seal_smeller.lore2": "Once figured out it will correct itself",
   "advancements.haunted.root.title": "The beginning of a friend?",
   "advancements.haunted.root.description": "You found a note that describes the way of unsealing a friend from a god-grade seal?"
 }

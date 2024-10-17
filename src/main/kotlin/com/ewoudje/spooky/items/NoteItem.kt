@@ -28,10 +28,11 @@ class NoteItem(val noteTexture: ResourceLocation, properties: Properties) : Item
     inner class Gui : Screen("A Note A".component) {
         override fun isPauseScreen(): Boolean = false
 
-        override fun renderBackground(guiGraphics: GuiGraphics, mouseX: Int, mouseY: Int, partialTick: Float) {
+        override fun render(guiGraphics: GuiGraphics, mouseX: Int, mouseY: Int, partialTick: Float) {
             val xOffset = (width - NOTE_WIDTH) / 2
             val yOffset = (height - NOTE_HEIGHT) / 2 - 20
             guiGraphics.blit(BACKGROUND_NOTE_TEXTURE, xOffset, yOffset, 0, 0, NOTE_WIDTH, NOTE_HEIGHT)
+            guiGraphics.blit(noteTexture, xOffset, yOffset, 0, 0, NOTE_WIDTH, NOTE_HEIGHT)
         }
     }
 
