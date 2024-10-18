@@ -3,8 +3,9 @@
 uniform vec3 uFogPosition;
 uniform vec3 uFogNormal;
 uniform vec3 uFogUp;
-uniform sampler3D uFogTexture;
-uniform sampler3D uFogShadowTexture;
+uniform sampler2D uFogTexture;
+uniform sampler2D uFogShadowTexture;
+uniform float uScroll;
 
 uniform sampler2D uDepth;
 uniform float uNearPlane;
@@ -33,7 +34,9 @@ vec3 relpos() {
 }
 vec3 RelPos = relpos();
 vec3 WorldPos = RelPos + uCameraPos;
-vec3 CameraDir = normalize(RelPos);
+float WorldDepth = length(RelPos);
+vec3 CameraDir = RelPos / WorldDepth;
+float ToPlaneDistance = dot(uFogPosition - uCameraPos, uFogNormal) / dot(CameraDir, uFogNormal);
 
 float linearizeDepth(float d, float zNear, float zFar) {
     float clipZ = 2.0 * d - 1.0;
@@ -46,14 +49,16 @@ float getDepth() {
     return linearizeDepth(depth, uNearPlane, uFarPlane);
 }
 
-float sampleMixed(sampler3D sampler, vec3 pos) {
-    float tex1 = texture(uFogShadowTexture, pos * 0.02).r;
-    float tex2 = texture(uFogShadowTexture, pos * 0.01).r;
-    float tex3 = texture(uFogShadowTexture, pos * 0.005).r;
-    return tex1 + tex2 * 4 + tex3 * 16;
+float getFogExtension(vec3 planePos) {
+    vec2 dPos = vec2(dot(FogLeft, planePos), dot(uFogUp, planePos) + uScroll);
+    float tex1 = texture(uFogTexture, dPos * 0.0004).r * 3;
+    float tex2 = texture(uFogTexture, dPos * 0.0001).r * 8;
+    float tex3 = texture(uFogTexture, dPos * 0.00001).r * 32;
+    return abs(tex1 + tex2 - tex3 + 2);
 }
 
 void insideFog(float distanceIn) {
+    /*
     float lookingOustide = dot(CameraDir, uFogNormal);
     float alpha;
     if (lookingOustide < 0) {
@@ -62,46 +67,58 @@ void insideFog(float distanceIn) {
         distanceIn = clamp(distanceIn * 0.2, 0, 1);
         alpha = (1 - lookingOustide) * distanceIn * 0.99;
     }
+*/
 
-    float depth = getDepth();
-    depth /= 10f;
+    float depth = WorldDepth;
+    depth /= 10;
     depth = clamp(depth, 0, 1);
-    fragColor = vec4(depth, depth, depth, alpha);
-}
-
-void setColorForPos(vec3 pos, float alpha) {
-    float shadow = sampleMixed(uFogShadowTexture, pos);
-    float grey = shadow * 0.55 + 0.40;
-    fragColor = vec4(grey, grey, grey + 0.07f, alpha);
+    fragColor = vec4(depth, depth, depth, 0.98);
 }
 
 void outsideFog() {
-    float depth = getDepth();
-
+    if (ToPlaneDistance < 0.1 || ToPlaneDistance > 10000) discard;
+    if ((ToPlaneDistance - 20) > WorldDepth) discard;
 
     //vec3 testPos = WorldDir * depth;
-    float dist = dot(uFogNormal, WorldPos - uFogPosition);
+    vec3 samplePos;
+    vec3 onPlanePos;
+    float distFromPlane;
+    float firstFogExtension = -1000;
+    float fogExtension;
+    float sampleLength;
 
-    float planePosDistance = dot(uFogPosition - uCameraPos, uFogNormal) / dot(CameraDir, uFogNormal);
-    vec3 planePos = CameraDir * planePosDistance + uCameraPos;
 
-    if (dist > 0) {
-        planePos = WorldPos;
+    float sampleRangeStart = max(ToPlaneDistance - 20, 0);
+    float sampleRangeSize = min(20, WorldDepth);
+
+    const int sampleAmount = 50;
+    const float invSampleAmount = 1.0 / float(sampleAmount);
+    for (int i = 0; i < sampleAmount; i++)
+    {
+        sampleLength = (float(i) * sampleRangeSize * invSampleAmount) + sampleRangeStart;
+        if (sampleLength > WorldDepth) break;
+
+        samplePos = (CameraDir * sampleLength) + uCameraPos;
+        distFromPlane = dot(uFogNormal, samplePos - uFogPosition);
+        onPlanePos = samplePos - (distFromPlane * uFogNormal);
+        fogExtension = getFogExtension(onPlanePos);
+
+        if (distFromPlane < fogExtension) {
+            break;
+        }
     }
 
-    float fogDepth = sampleMixed(uFogTexture, planePos);
-    fogDepth += 0.5;
-    fogDepth = clamp(fogDepth, 0, 20);
-
-    //float fogDepth = getFogDepth(planePos);
-    if (dist > fogDepth) discard;
-
-    float alpha = 1.0f;
-    if (dist > 0) {
-        alpha = clamp((exp(1f - (dist / fogDepth)) / exp(1f)), 0, 1);
+    if (distFromPlane > fogExtension) {
+        if (ToPlaneDistance < WorldDepth) // If we just missed it by looking straight into it
+            fogExtension = getFogExtension(CameraDir * ToPlaneDistance + uCameraPos);
+        else discard;
     }
 
-    setColorForPos(planePos, alpha);
+    float alpha = clamp(WorldDepth - sampleLength, 0, 10) / 10;
+
+    fogExtension = clamp(fogExtension, 0, 14);
+    float grey = ((fogExtension / 14) * 0.15) + 0.45;
+    fragColor = vec4(grey, grey, grey + 0.07, alpha);
 }
 
 void main() {

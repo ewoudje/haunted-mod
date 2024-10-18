@@ -55,11 +55,11 @@ object ClientSpookyMod {
         event.dispatcher.register(
             literal<CommandSourceStack>("cspooky").then(
                 literal<CommandSourceStack>("rebuildTextures").executes { ctx ->
-                    buildTextures(null)
+                    RollingFogRenderer.makeTextures()
                     1
                 }).then(literal<CommandSourceStack>("fog").executes { ctx ->
                     val entity = ctx.source.entityOrException
-                    RollingFogRenderer.updateFog(entity.eyePosition.toVector3f(), Vector3f(0.1f, 0f, 0f), Vector3f(0.5f, 1f, 0f).normalize())
+                    RollingFogRenderer.updateFog(entity.eyePosition.toVector3f(), Vector3f(0f, 0f, 0f), Vector3f(0.5f, 1f, 0f).normalize())
                     1
                 }))
     }

@@ -1,8 +1,6 @@
 package com.ewoudje.spooky.client.renderers
 
 import com.ewoudje.spooky.client.FogTextureBuilder
-import com.ewoudje.spooky.client.FogTextureBuilder.sampler
-import com.ewoudje.spooky.client.FogTextureBuilder.samplerD
 import com.ewoudje.spooky.client.Shaders
 import com.mojang.blaze3d.pipeline.MainTarget
 import com.mojang.blaze3d.pipeline.RenderTarget
@@ -23,6 +21,7 @@ import org.lwjgl.system.MemoryUtil
 import thedarkcolour.kotlinforforge.neoforge.forge.vectorutil.v3d.minus
 import thedarkcolour.kotlinforforge.neoforge.forge.vectorutil.v3d.plus
 import thedarkcolour.kotlinforforge.neoforge.forge.vectorutil.v3d.times
+import java.lang.Exception
 import java.nio.FloatBuffer
 import java.util.stream.IntStream
 
@@ -89,6 +88,7 @@ object RollingFogRenderer {
         up.cross(direction)
 
         shader.setSampler("uDepth", mainCameraDepth.depthTextureId)
+        shader.setSampler("uFogTexture", fogTexture)
         shader.safeGetUniform("uInverseView").set(invertedViewMatrix)
         shader.safeGetUniform("uInverseProjection").set(invertedProjectionMatrix)
         shader.safeGetUniform("uFogPosition").set(fogPosition)
@@ -117,14 +117,6 @@ object RollingFogRenderer {
         val shader = RenderSystem.getShader()!!
         shader.apply()
 
-        GlStateManager._activeTexture(GL30.GL_TEXTURE1)
-        GL30.glBindTexture(GL30.GL_TEXTURE_3D, fogTexture)
-        GlStateManager._activeTexture(GL30.GL_TEXTURE2)
-        GL30.glBindTexture(GL30.GL_TEXTURE_3D, fogTextureShadow)
-
-        GL30.glUniform1i(fogTextureLocation, 1)
-        GL30.glUniform1i(fogTextureShadowLocation, 2)
-
         val bufferbuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX)
         bufferbuilder.addVertex(-1f, -1f, 0.0f).setUv(0f, 0f)
         bufferbuilder.addVertex(1f, -1f, 0.0f).setUv(1f, 0f)
@@ -140,36 +132,51 @@ object RollingFogRenderer {
     }
 
     fun makeTextures() {
-        if (fogTexture != 0) {
-            TextureUtil.releaseTextureId(fogTexture)
+        try {
+            if (fogTexture != 0) {
+                TextureUtil.releaseTextureId(fogTexture)
+            }
+
+            if (fogTextureShadow != 0) {
+                TextureUtil.releaseTextureId(fogTexture)
+            }
+
+            val textureSize = 2048
+            fun makeTexture(buffer: FloatBuffer, type: Int): Int {
+                val texture = TextureUtil.generateTextureId()
+                GL30.glBindTexture(GL30.GL_TEXTURE_2D, texture)
+                GL30.glTexImage2D(
+                    GL30.GL_TEXTURE_2D,
+                    0,
+                    type,
+                    textureSize,
+                    textureSize,
+                    0,
+                    GL30.GL_RED,
+                    GL30.GL_FLOAT,
+                    buffer
+                )
+                GL30.glTexParameteri(GL30.GL_TEXTURE_2D, GL30.GL_TEXTURE_WRAP_S, GL30.GL_MIRRORED_REPEAT)
+                GL30.glTexParameteri(GL30.GL_TEXTURE_2D, GL30.GL_TEXTURE_WRAP_T, GL30.GL_MIRRORED_REPEAT)
+                GL30.glTexParameteri(GL30.GL_TEXTURE_2D, GL30.GL_TEXTURE_WRAP_R, GL30.GL_MIRRORED_REPEAT)
+                GL30.glTexParameteri(GL30.GL_TEXTURE_2D, GL30.GL_TEXTURE_MIN_FILTER, GL30.GL_LINEAR)
+                GlStateManager._bindTexture(0)
+                return texture
+            }
+
+
+            val noise = PerlinNoise.create(RandomSource.create(128), IntStream.of(1, 2, 8, 16))
+            val noise2 = PerlinNoise.create(RandomSource.create(512), IntStream.of(3, 5, 7, 10))
+            val textureBuffer = FogTextureBuilder.build2DTexture(textureSize) { x, y ->
+                (noise.getValue(x.toDouble(), 0.0, y.toDouble()).toFloat() +
+                        noise2.getValue(x.toDouble(), 0.0, y.toDouble()).toFloat()) / 2
+            }
+
+            fogTexture = makeTexture(textureBuffer, GL30.GL_R32F)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            fogTexture = 0
+            fogTextureShadow = 0
         }
-
-        if (fogTextureShadow != 0) {
-            TextureUtil.releaseTextureId(fogTexture)
-        }
-
-        val textureSize = 256
-        fun makeTexture(buffer: FloatBuffer, type: Int): Int {
-            val texture = TextureUtil.generateTextureId()
-            GL30.glBindTexture(GL30.GL_TEXTURE_3D, texture)
-            GL30.glTexImage3D(GL30.GL_TEXTURE_3D, 0, type, textureSize, textureSize, textureSize, 0, GL30.GL_RED, GL30.GL_FLOAT, buffer)
-            GL30.glTexParameteri(GL30.GL_TEXTURE_3D, GL30.GL_TEXTURE_WRAP_S, GL30.GL_MIRRORED_REPEAT)
-            GL30.glTexParameteri(GL30.GL_TEXTURE_3D, GL30.GL_TEXTURE_WRAP_T, GL30.GL_MIRRORED_REPEAT)
-            GL30.glTexParameteri(GL30.GL_TEXTURE_3D, GL30.GL_TEXTURE_WRAP_R, GL30.GL_MIRRORED_REPEAT)
-            GL30.glTexParameteri(GL30.GL_TEXTURE_3D, GL30.GL_TEXTURE_MIN_FILTER, GL30.GL_LINEAR)
-            GlStateManager._bindTexture(0)
-            return texture
-        }
-
-
-        val noise = PerlinNoise.create(RandomSource.create(128), IntStream.of(1, 2, 8, 16))
-        val textureBuffer = FogTextureBuilder.build3DTexture(textureSize)
-            { x, y, z -> noise.getValue(x.toDouble(), y.toDouble(), z.toDouble()).toFloat() }
-        val shadowBuffer = FogTextureBuilder.buildShadow3DTexture(textureSize, 45f, textureBuffer.sampler(textureSize))
-
-
-        fogTexture = makeTexture(textureBuffer, GL30.GL_R32F)
-        fogTextureShadow = makeTexture(shadowBuffer, GL30.GL_R32F)
-
     }
 }
