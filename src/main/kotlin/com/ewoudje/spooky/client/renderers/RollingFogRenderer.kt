@@ -200,7 +200,7 @@ object RollingFogRenderer {
 
         shouldRender = true
         nextTick = {
-            val diff = player.min(pos, Vector3d())
+            val diff = player.sub(pos, Vector3d())
             val hDepth = fog.thickness / 2
             val flatNormal = Vector3d(fog.direction)
 

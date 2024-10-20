@@ -29,18 +29,18 @@ object FogHandler {
     private fun sendFogUpdate(level: ServerLevel, fog: FogState) {
         val pos = fog.position
         val payload = FogUpdatePacket(fog)
-        if (pos != null) {
+        /*if (pos != null) {
             PacketDistributor.sendToPlayersNear(
                 level,
                 null,
                 pos.x,
                 pos.y,
                 pos.z,
-                512.0,
+                512.0 + fog.thickness,
                 payload
             )
-        } else {
+        } else {*/
             PacketDistributor.sendToAllPlayers(payload)
-        }
+        //}
     }
 }
