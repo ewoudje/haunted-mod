@@ -5,7 +5,9 @@ import com.ewoudje.spooky.client.models.SpookyModels
 import com.ewoudje.spooky.client.particles.SpookyParticles
 import com.ewoudje.spooky.client.renderers.RollingFogRenderer
 import com.ewoudje.spooky.client.renderers.SpookyEntityRenderers
+import com.ewoudje.spooky.world.fog.FogState
 import com.mojang.brigadier.builder.LiteralArgumentBuilder.literal
+import net.minecraft.client.Minecraft
 import net.minecraft.commands.CommandSourceStack
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.fml.common.Mod
@@ -17,6 +19,7 @@ import net.neoforged.neoforge.client.event.TextureAtlasStitchedEvent
 import org.joml.Vector3f
 import thedarkcolour.kotlinforforge.neoforge.forge.FORGE_BUS
 import thedarkcolour.kotlinforforge.neoforge.forge.MOD_BUS
+import thedarkcolour.kotlinforforge.neoforge.forge.vectorutil.v3d.toVector3d
 
 @Mod(SpookyMod.ID, dist = [Dist.CLIENT])
 object ClientSpookyMod {
@@ -32,12 +35,14 @@ object ClientSpookyMod {
         SpookySounds.REGISTRY.register(MOD_BUS)
         SpookyParticles.REGISTRY.register(MOD_BUS)
 
-        FORGE_BUS.addListener(::addClientCommands)
         FORGE_BUS.addListener(::tick)
         FORGE_BUS.addListener(::render)
     }
 
     fun tick(event: ClientTickEvent.Post) {
+        // If there is no player then we aren't loaded, if we aren't loaded we don't need to tick
+        Minecraft.getInstance().player ?: return
+
         RollingFogRenderer.tick()
     }
 
@@ -49,18 +54,5 @@ object ClientSpookyMod {
 
     fun buildTextures(event: TextureAtlasStitchedEvent?) {
         //RollingFogRenderer.makeTextures()
-    }
-
-    fun addClientCommands(event: RegisterClientCommandsEvent) {
-        event.dispatcher.register(
-            literal<CommandSourceStack>("cspooky").then(
-                literal<CommandSourceStack>("rebuildTextures").executes { ctx ->
-                    RollingFogRenderer.makeTextures()
-                    1
-                }).then(literal<CommandSourceStack>("fog").executes { ctx ->
-                    val entity = ctx.source.entityOrException
-                    RollingFogRenderer.updateFog(entity.eyePosition.toVector3f(), Vector3f(0f, 0f, 0f), Vector3f(0.5f, 1f, 0f).normalize())
-                    1
-                }))
     }
 }
