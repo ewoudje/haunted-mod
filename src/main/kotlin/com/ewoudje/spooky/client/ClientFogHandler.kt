@@ -14,6 +14,7 @@ object ClientFogHandler {
     private var whisperChance = 0.0
 
     fun tick() {
+        if (Minecraft.getInstance().isPaused) return
         val player = Minecraft.getInstance().player ?: return
 
         if (lastFog?.isInFog(player.position().toVector3d()) == true) {

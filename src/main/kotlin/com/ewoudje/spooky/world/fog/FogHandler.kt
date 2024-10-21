@@ -20,6 +20,8 @@ object FogHandler {
             fog.position = fogPos.add(fog.velocity)
         }
 
+        FogUnsealedSpawner.spawner?.tick(event.server.overworld())
+
         if (tickCounter >= 5 && fog.consumeNetworkDirty()) {
             sendFogUpdate(level, fog)
             tickCounter = 0

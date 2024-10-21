@@ -4,6 +4,7 @@ import com.ewoudje.spooky.client.SpookySounds
 import com.ewoudje.spooky.client.particles.SpookyParticles
 import com.ewoudje.spooky.client.particles.UnsealParticleProvider
 import com.ewoudje.spooky.world.SpookyWorldState.Companion.spookyWorldState
+import com.ewoudje.spooky.world.fog.FogUnsealedSpawner
 import net.minecraft.client.Minecraft
 import net.minecraft.client.multiplayer.ClientLevel
 import net.minecraft.core.BlockPos
@@ -130,10 +131,10 @@ class SealBlockEntity(pos: BlockPos, state: BlockState) : SyncedBlockEntity(Spoo
     }
 
     private fun checkTimeEast(): Boolean =
-        level!!.dayTime in 14900..15300
+        (level!!.dayTime % 24000) in 14900..15300
 
     private fun checkTimeWest(): Boolean =
-        level!!.dayTime in 20700..21100
+        (level!!.dayTime % 24000) in 20700..21100
 
 
     companion object {
@@ -149,7 +150,9 @@ class SealBlockEntity(pos: BlockPos, state: BlockState) : SyncedBlockEntity(Spoo
                     self.setChanged()
 
                     if (!level.isClientSide) {
-                        (level as ServerLevel).spookyWorldState.isEvilGodFree = true
+                        level as ServerLevel
+                        level.spookyWorldState.isEvilGodFree = true
+                        FogUnsealedSpawner.setupUnsealingFog(level, pos, 64.0)
                     }
                 } else if (self.openingProgress == 20 && !level.isClientSide) {
                     level as ServerLevel
