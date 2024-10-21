@@ -1,5 +1,6 @@
 package com.ewoudje.spooky.networking
 
+import com.ewoudje.spooky.client.ClientFogHandler
 import com.ewoudje.spooky.client.ClientSpookyMod
 import com.ewoudje.spooky.client.renderers.RollingFogRenderer
 import com.ewoudje.spooky.resource
@@ -15,7 +16,7 @@ data class FogUpdatePacket(
     override fun type(): CustomPacketPayload.Type<FogUpdatePacket> = TYPE
 
     fun handle(ctx: IPayloadContext) {
-        RollingFogRenderer.setClientFog(fogState, ctx.player().position().toVector3d())
+        ClientFogHandler.updateFog(fogState)
     }
 
     companion object {

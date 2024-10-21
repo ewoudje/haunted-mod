@@ -43,11 +43,10 @@ object ClientSpookyMod {
         // If there is no player then we aren't loaded, if we aren't loaded we don't need to tick
         Minecraft.getInstance().player ?: return
 
-        RollingFogRenderer.tick()
+        ClientFogHandler.tick()
     }
 
     fun render(event: RenderLevelStageEvent) {
-
         if (event.stage == RenderLevelStageEvent.Stage.AFTER_LEVEL)
             RollingFogRenderer.render(event.modelViewMatrix, event.partialTick.gameTimeDeltaTicks)
     }

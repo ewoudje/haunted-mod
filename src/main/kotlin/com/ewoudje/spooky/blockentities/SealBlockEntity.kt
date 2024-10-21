@@ -3,27 +3,21 @@ package com.ewoudje.spooky.blockentities
 import com.ewoudje.spooky.client.SpookySounds
 import com.ewoudje.spooky.client.particles.SpookyParticles
 import com.ewoudje.spooky.client.particles.UnsealParticleProvider
-import com.ewoudje.spooky.world.SpookyWorldState
 import com.ewoudje.spooky.world.SpookyWorldState.Companion.spookyWorldState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.multiplayer.ClientLevel
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.core.Holder
-import net.minecraft.core.HolderLookup
-import net.minecraft.core.particles.DustParticleOptions
-import net.minecraft.core.particles.ParticleOptions
 import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.network.protocol.game.ClientboundSoundPacket
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.sounds.SoundSource
 import net.minecraft.world.level.Level
-import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 import thedarkcolour.kotlinforforge.neoforge.forge.vectorutil.v3d.minus
 import thedarkcolour.kotlinforforge.neoforge.forge.vectorutil.v3d.times
-import thedarkcolour.kotlinforforge.neoforge.forge.vectorutil.v3d.toVec3
 
 class SealBlockEntity(pos: BlockPos, state: BlockState) : SyncedBlockEntity(SpookyBlockEntities.SEAL, pos, state) {
     private var opened = false
@@ -70,12 +64,12 @@ class SealBlockEntity(pos: BlockPos, state: BlockState) : SyncedBlockEntity(Spoo
 
         val level = level!!
 
-        //level.playSound(null, blockPos, SpookySounds.SLIDING_SEAL_OPEN, SoundSource.BLOCKS, 1f, 1f)
+        level.playSound(null, blockPos, SpookySounds.SLIDING_KEY_OPEN, SoundSource.BLOCKS, 1f, 1f)
 
         return true
     }
 
-    fun renderParticles() {
+    fun renderHackerParticles() {
         if (isOpen()) return
         val level = level ?: return
         if (!level.isClientSide) return
@@ -170,12 +164,12 @@ class SealBlockEntity(pos: BlockPos, state: BlockState) : SyncedBlockEntity(Spoo
                 }
 
                 if (level.isClientSide) {
-                    self.renderParticles()
+                    self.renderHackerParticles()
                     self.renderMoonParticles()
                 }
             } else {
-                if (level.isClientSide && self.checkHackers() && (self.checkTimeEast() || self.checkTimeWest())) {
-                    self.renderParticles()
+                if (level.isClientSide && self.checkHackers()) {
+                    self.renderHackerParticles()
                 }
 
                 if (level.isClientSide && (self.checkTimeEast() || self.checkTimeWest())) {

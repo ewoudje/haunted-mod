@@ -71,6 +71,7 @@ object SpookyMod {
             LiteralArgumentBuilder.literal<CommandSourceStack?>("fog").executes {
                 val fog = it.source.level.spookyWorldState.fogState
                 fog.position = it.source.anchor.apply(it.source).toVector3d()
+                fog.position!!.y = 192.0
                 fog.thickness = 100.0
                 fog.velocity = Vector3f(0.1f, 0f, 0f)
                 fog.direction = Vector3f(0.5f, 1f, 0f).normalize()

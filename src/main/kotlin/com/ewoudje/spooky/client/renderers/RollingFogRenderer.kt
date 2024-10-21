@@ -24,28 +24,17 @@ import java.util.stream.IntStream
 
 
 object RollingFogRenderer {
-    private var position = Vector3d()
-    private var lastPosition = Vector3d()
-    private var nextTick: (() -> Unit)? = null
-    private var velocity = Vector3f()
-    private var direction = Vector3f()
-    private var shouldRender = false
+    var position = Vector3d()
+    var lastPosition = Vector3d()
+    var nextTick: (() -> Unit)? = null
+    var velocity = Vector3f()
+    var direction = Vector3f()
+    var shouldRender = false
+    var height = 192.0
+    var fogRoll = 0f
     private var fogTexture = 0
-    private var fogTextureShadow = 0
-    private var fogTextureLocation = 0
-    private var fogTextureShadowLocation = 0
-    private var height = 192.0
-    private var fogRoll = 0f
 
     private var mainCameraDepth = DepthOnlyRenderTarget(MainTarget.DEFAULT_WIDTH, MainTarget.DEFAULT_HEIGHT)
-
-    fun updateFog(position: Vector3fc, velocity: Vector3fc, direction: Vector3fc) {
-        this.position.set(position)
-        this.velocity.set(velocity)
-        this.direction.set(direction).normalize()
-        shouldRender = true
-    }
-
     fun tick() {
         if (!shouldRender) return
         if (nextTick != null) {
@@ -109,9 +98,6 @@ object RollingFogRenderer {
         shader.safeGetUniform("uCameraPos").set(cameraPosition)
         shader.safeGetUniform("uScroll").set(fogRoll)
         shader.safeGetUniform("uHeight").set(height.toFloat())
-
-        if (fogTextureLocation == 0) fogTextureLocation = GL30.glGetUniformLocation(shader.id, "uFogTexture")
-        if (fogTextureShadowLocation == 0) fogTextureShadowLocation = GL30.glGetUniformLocation(shader.id, "uFogShadowTexture")
     }
 
 
@@ -146,10 +132,6 @@ object RollingFogRenderer {
     fun makeTextures() {
         try {
             if (fogTexture != 0) {
-                TextureUtil.releaseTextureId(fogTexture)
-            }
-
-            if (fogTextureShadow != 0) {
                 TextureUtil.releaseTextureId(fogTexture)
             }
 
@@ -188,39 +170,8 @@ object RollingFogRenderer {
         } catch (e: Exception) {
             e.printStackTrace()
             fogTexture = 0
-            fogTextureShadow = 0
         }
     }
 
-    fun setClientFog(fog: FogState, player: Vector3d) {
-        val pos = fog.position ?: run {
-            shouldRender = false
-            return
-        }
 
-        shouldRender = true
-        nextTick = {
-            val diff = player.sub(pos, Vector3d())
-            val hDepth = fog.thickness / 2
-            val flatNormal = Vector3d(fog.direction)
-
-            flatNormal.y = 0.0
-            flatNormal.normalize()
-
-            height = fog.height
-            velocity = fog.velocity
-            lastPosition = position
-
-            val distanceToInnerPlane = flatNormal.dot(diff)
-            if (distanceToInnerPlane > 0) {
-                position = Vector3d(pos).add(flatNormal.mul(hDepth))
-                direction = fog.direction
-            } else {
-                position = Vector3d(pos).add(flatNormal.mul(-hDepth))
-                direction = fog.direction.negate(Vector3f())
-                direction.y = fog.direction.y
-                direction.normalize()
-            }
-        }
-    }
 }

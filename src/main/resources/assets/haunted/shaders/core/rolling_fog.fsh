@@ -106,14 +106,6 @@ void outsideFog() {
         }
     }
 
-    /*
-    if (distFromPlane < fogExtension) {
-        if (ToPlaneDistance < WorldDepth) // If we just missed it by looking straight into it
-            fogExtension = getFogExtension(CameraDir * ToPlaneDistance + uCameraPos);
-        else discard;
-    }*/
-
-
     fogExtension = 14 - clamp(fogExtension, 0, 14);
     float grey = ((fogExtension / 14) * 0.15) + 0.45;
     float alpha = clamp(WorldDepth - sampleLength, 0, 10) / 10;

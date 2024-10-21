@@ -2,11 +2,15 @@ package com.ewoudje.spooky.world.fog
 
 import com.ewoudje.spooky.SpookyMod.VECTOR3D_CODEC
 import com.ewoudje.spooky.SpookyMod.nullable
+import com.ewoudje.spooky.client.renderers.RollingFogRenderer
+import com.ewoudje.spooky.client.renderers.RollingFogRenderer.lastPosition
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
 import org.joml.Vector3d
+import org.joml.Vector3dc
 import org.joml.Vector3f
+import thedarkcolour.kotlinforforge.neoforge.forge.vectorutil.v3d.toVector3d
 
 class FogState(
     position: Vector3d? = null,
@@ -68,6 +72,26 @@ class FogState(
     fun setSetDirty(setDirty: () -> Unit) {
         this.setDirty = { setDirty(); this.networkDirty = true }
     }
+
+    fun isInFog(vec: Vector3dc): Boolean {
+        val pos = position ?: return false
+        val flat = getFlatNormal()
+        val hDepth = thickness / 2
+        val side = flat.mul(hDepth)
+        val dir = direction.toVector3d()
+        val dir2 = dir.negate(Vector3d())
+        dir2.y = dir.y
+
+        val p1 = pos.add(side, Vector3d())
+        val p2 = pos.sub(side, Vector3d())
+
+        val d1 = vec.sub(p1, p1).dot(dir)
+        val d2 = vec.sub(p2, p2).dot(dir2)
+
+        return d1 < 0 && d2 < 0
+    }
+
+    fun getFlatNormal() = Vector3d(direction.x.toDouble(), 0.0, direction.z.toDouble()).normalize()
 
     companion object {
         val STREAM_CODEC = StreamCodec.composite(
