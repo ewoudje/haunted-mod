@@ -3,6 +3,7 @@ package com.ewoudje.spooky.blocks
 import com.ewoudje.spooky.SpookyMod
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
+import net.minecraft.world.level.block.SnowyDirtBlock
 import net.minecraft.world.level.block.SoundType
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties
@@ -42,6 +43,16 @@ object SpookyBlocks {
                 .mapColor(MapColor.METAL)
                 .strength(5.0F, 6.0F)
                 .sound(SoundType.METAL)
+        )
+    }
+
+    val CURSED_GRASS by REGISTRY.register("cursed_grass_block") { ->
+        SnowyDirtBlock(
+            Properties.of()
+                .mapColor(MapColor.GRASS)
+                .strength(0.6F)
+                .sound(SoundType.GRASS)
+                .lootFrom { Blocks.GRASS_BLOCK }
         )
     }
 }

@@ -10,7 +10,7 @@ import org.joml.Vector3f
 import thedarkcolour.kotlinforforge.neoforge.forge.vectorutil.v3d.toVector3d
 
 object ClientFogHandler {
-    private val FOG_DISTANCE = 512.0 * 512.0
+    private val FOG_DISTANCE = 512.0
     private var lastFog: FogState? = null
     private var whisperChance = 0.0
     private var visionChance = 0.0
@@ -57,7 +57,13 @@ object ClientFogHandler {
         val player = Minecraft.getInstance().player ?: throw IllegalStateException()
         val playerPos = player.position().toVector3d()
 
-        if (fog.position != null && playerPos.distanceSquared(fog.position) < FOG_DISTANCE + (fog.thickness * fog.thickness)) {
+        if (fog.position != null &&
+            playerPos.sub(fog.position)
+                .dot(
+                    fog.direction.x.toDouble(),
+                    fog.direction.y.toDouble(),
+                    fog.direction.z.toDouble()
+                ) < FOG_DISTANCE + fog.thickness) {
             if (lastFog == null) {
                 player.playSound(SpookySounds.LAUGHS)
             }

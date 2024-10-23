@@ -32,7 +32,7 @@
     ]
   },
   "rotating_open1": {
-    "subtitle": "haunted.sliding_open",
+    "subtitle": "haunted.rotating_open",
     "sounds": [
       "haunted:sliding_open1"
     ]
