@@ -25,7 +25,7 @@ class NoteItem(val noteTexture: ResourceLocation, properties: Properties) : Item
         return InteractionResultHolder.success(item)
     }
 
-    inner class Gui : Screen("A Note A".component) {
+    inner class Gui : Screen("A Note".component) {
         override fun isPauseScreen(): Boolean = false
 
         override fun render(guiGraphics: GuiGraphics, mouseX: Int, mouseY: Int, partialTick: Float) {

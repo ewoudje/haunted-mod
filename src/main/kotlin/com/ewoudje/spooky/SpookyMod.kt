@@ -4,14 +4,12 @@ import com.ewoudje.spooky.blocks.SpookyBlocks
 import com.ewoudje.spooky.blockentities.SpookyBlockEntities
 import com.ewoudje.spooky.capabilities.ShizoCapability
 import com.ewoudje.spooky.capabilities.SpookyCapabilities
-import com.ewoudje.spooky.client.ClientSpookyMod
+import com.ewoudje.spooky.client.SpookyVisions
 import com.ewoudje.spooky.items.SpookyItems
 import com.ewoudje.spooky.networking.SpookyPackets
 import com.ewoudje.spooky.world.SpookyWorldHandler
-import com.ewoudje.spooky.world.SpookyWorldState
 import com.ewoudje.spooky.world.SpookyWorldState.Companion.spookyWorldState
 import com.ewoudje.spooky.world.fog.FogHandler
-import com.ewoudje.spooky.world.fog.FogState
 import com.ewoudje.spooky.world.structures.SpookyStructurePieces
 import com.ewoudje.spooky.world.structures.SpookyStructures
 import com.ewoudje.spooky.world.structures.processor.SpookyStructureProcessors
@@ -24,6 +22,7 @@ import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.ResourceLocation
 import net.neoforged.fml.common.Mod
 import net.neoforged.neoforge.event.RegisterCommandsEvent
+import net.neoforged.neoforge.registries.NewRegistryEvent
 import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -32,7 +31,6 @@ import org.joml.Vector3dc
 import org.joml.Vector3f
 import thedarkcolour.kotlinforforge.neoforge.forge.FORGE_BUS
 import thedarkcolour.kotlinforforge.neoforge.forge.MOD_BUS
-import thedarkcolour.kotlinforforge.neoforge.forge.runForDist
 import thedarkcolour.kotlinforforge.neoforge.forge.vectorutil.v3d.toVector3d
 
 @Mod(SpookyMod.ID)
@@ -56,6 +54,7 @@ object SpookyMod {
         MOD_BUS.addListener(SpookyCapabilities::registerCapabilities)
         MOD_BUS.addListener(SpookyAttributes::registerAttributes)
         MOD_BUS.addListener(SpookyPackets::register)
+        MOD_BUS.addListener(::registerRegistries)
 
         FORGE_BUS.addListener(ShizoCapability::tickPlayer)
         FORGE_BUS.addListener(FogHandler::tick)
@@ -79,6 +78,10 @@ object SpookyMod {
 
                 1
             }))
+    }
+
+    fun registerRegistries(event: NewRegistryEvent) {
+        event.register(SpookyVisions.REGISTRY)
     }
 
     val VECTOR3D_CODEC = StreamCodec.composite(

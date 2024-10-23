@@ -24,7 +24,7 @@ class ShizoCapability(val player: Player) {
         return hungry - satiated
     }
 
-    val progress get() = SpookyAttributes.SHIZO_PROGRESS.getVal(player)
+    val sanity get() = SpookyAttributes.SANITY.getVal(player)
     var chestTripped: BlockPos? = null
     var chestTrippedI = 0
 
@@ -40,13 +40,13 @@ class ShizoCapability(val player: Player) {
             }
         }
 
-        if (progress > 0.5) {
-            val chance = (progress - 0.5) * 2.0 * chestChancePerTick
+        if (sanity < 10) {
+            val chance = sanity * 0.1 * chestChancePerTick
             if (chance > random.nextDouble()) tripChest(level)
         }
 
-        if (progress > 0.7) {
-            val chance = (progress - 0.7) * 3.0 * creeperChancePerTick
+        if (sanity < 5) {
+            val chance = sanity * 0.2 * creeperChancePerTick
             if (chance > random.nextDouble()) tripCreeper()
         }
     }

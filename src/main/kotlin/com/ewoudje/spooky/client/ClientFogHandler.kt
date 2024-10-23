@@ -1,5 +1,6 @@
 package com.ewoudje.spooky.client
 
+import com.ewoudje.spooky.client.particles.SpookyParticles
 import com.ewoudje.spooky.client.renderers.RollingFogRenderer
 import com.ewoudje.spooky.world.fog.FogState
 import net.minecraft.client.Minecraft
@@ -12,17 +13,40 @@ object ClientFogHandler {
     private val FOG_DISTANCE = 512.0 * 512.0
     private var lastFog: FogState? = null
     private var whisperChance = 0.0
+    private var visionChance = 0.0
 
     fun tick() {
         if (Minecraft.getInstance().isPaused) return
         val player = Minecraft.getInstance().player ?: return
 
         if (lastFog?.isInFog(player.position().toVector3d()) == true) {
-            if (whisperChance > 0.005 && player.random.nextFloat() < whisperChance) {
+            if (whisperChance > 0.005 && player.random.nextDouble() < whisperChance) {
                 Minecraft.getInstance().soundManager.play(SimpleSoundInstance.forAmbientAddition(SpookySounds.WHISPERS))
                 whisperChance = 0.0
             } else {
                 whisperChance += 0.0001
+            }
+
+            if (visionChance > 0.01 && player.random.nextDouble() < visionChance) {
+                val direction = Vector3d(player.random.nextDouble() - 0.5, 0.0, player.random.nextDouble() - 0.5)
+                    .normalize(player.random.nextDouble() * 5 + 2)
+
+                val particlePos = player.eyePosition.toVector3d().add(direction)
+                Minecraft.getInstance().particleEngine.createParticle(
+                    SpookyParticles.VISION_PARTICLE,
+                    particlePos.x, particlePos.y + player.random.nextDouble() - 0.5, particlePos.z,
+                    0.0, 0.0, 0.0
+                )
+
+                if (player.random.nextDouble() < 0.02) {
+                    SpookyVisions.showVision(SpookyVisions.CROWNING, 0.45f)
+                } else if (player.random.nextDouble() < 0.05) {
+                    SpookyVisions.showVision(SpookyVisions.OUTSIDE, 0.6f)
+                }
+
+                visionChance = 0.0
+            } else {
+                visionChance += 0.00015
             }
         }
 

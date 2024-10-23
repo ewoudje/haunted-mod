@@ -31,9 +31,11 @@ object ClientSpookyMod {
         MOD_BUS.addListener(SpookyModels::registerLayers)
         MOD_BUS.addListener(SpookyEntityRenderers::registerRenderers)
         MOD_BUS.addListener(SpookyParticles::registerProviders)
+        MOD_BUS.addListener(SpookyVisions::registerLayer)
 
         SpookySounds.REGISTRY.register(MOD_BUS)
         SpookyParticles.REGISTRY.register(MOD_BUS)
+        SpookyVisions.DEFFERED_REGISTRY.register(MOD_BUS)
 
         FORGE_BUS.addListener(::tick)
         FORGE_BUS.addListener(::render)
