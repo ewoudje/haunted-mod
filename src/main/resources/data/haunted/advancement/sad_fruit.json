@@ -1,0 +1,32 @@
+{
+  "parent": "haunted:sad_seed",
+  "criteria": {
+    "sad_seed": {
+      "conditions": {
+        "item": {
+          "items": "haunted:sad_fruit"
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.haunted.sad_fruit.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "haunted:sad_fruit"
+    },
+    "title": {
+      "translate": "advancements.haunted.sad_fruit.title"
+    }
+  },
+  "requirements": [
+    [
+      "sad_seed"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

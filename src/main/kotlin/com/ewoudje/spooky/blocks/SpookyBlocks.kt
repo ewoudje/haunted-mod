@@ -1,17 +1,12 @@
 package com.ewoudje.spooky.blocks
 
-import com.ewoudje.spooky.SpookyMod
-import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.block.Blocks
-import net.minecraft.world.level.block.SnowyDirtBlock
-import net.minecraft.world.level.block.SoundType
-import net.minecraft.world.level.block.state.BlockBehaviour
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties
-import net.minecraft.world.level.block.state.properties.NoteBlockInstrument
-import net.minecraft.world.level.material.MapColor
-import net.neoforged.neoforge.registries.DeferredRegister
-
 // THIS LINE IS REQUIRED FOR USING PROPERTY DELEGATES
+import com.ewoudje.spooky.SpookyMod
+import net.minecraft.world.level.block.*
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties
+import net.minecraft.world.level.material.MapColor
+import net.minecraft.world.level.material.PushReaction
+import net.neoforged.neoforge.registries.DeferredRegister
 import thedarkcolour.kotlinforforge.neoforge.forge.getValue
 
 object SpookyBlocks {
@@ -52,7 +47,18 @@ object SpookyBlocks {
                 .mapColor(MapColor.GRASS)
                 .strength(0.6F)
                 .sound(SoundType.GRASS)
-                .lootFrom { Blocks.GRASS_BLOCK }
+        )
+    }
+
+    val SAD_CROP by REGISTRY.register("sad_crop") { ->
+        SadCropBlock(
+            Properties.of()
+                .mapColor(MapColor.PLANT)
+                .noCollission()
+                .randomTicks()
+                .instabreak()
+                .sound(SoundType.CROP)
+                .pushReaction(PushReaction.DESTROY)
         )
     }
 }

@@ -7,6 +7,13 @@
   "item.haunted.seal_smeller": "Seal Smeller",
   "item.haunted.seal_smeller.lore1": "Might sometimes smell something different",
   "item.haunted.seal_smeller.lore2": "Once figured out it will correct itself",
+  "item.haunted.sad_seed": "Seed of sadness",
+  "item.haunted.sad_fruit": "Sad fruit",
+  "effect.haunted.sad": "Sad",
   "advancements.haunted.root.title": "The beginning of a friend?",
-  "advancements.haunted.root.description": "You found a note that describes the way of unsealing a friend from a god-grade seal?"
+  "advancements.haunted.root.description": "You found a note that describes the way of unsealing a friend from a god-grade seal?",
+  "advancements.haunted.sad_seed.title": "Sadness in a seed",
+  "advancements.haunted.sad_seed.description": "You found a seed that holds sadness",
+  "advancements.haunted.sad_fruit.title": "Hungry for tears?",
+  "advancements.haunted.sad_fruit.description": "You are very sad now, makes you more lucky and better underwater"
 }

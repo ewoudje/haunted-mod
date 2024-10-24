@@ -50,6 +50,7 @@ object SpookyMod {
         SpookyStructures.TYPE_REGISTRY.register(MOD_BUS)
         SpookyStructurePieces.REGISTRY.register(MOD_BUS)
         SpookyStructureProcessors.REGISTRY.register(MOD_BUS)
+        SpookyEffects.REGISTRY.register(MOD_BUS)
 
         MOD_BUS.addListener(SpookyCapabilities::registerCapabilities)
         MOD_BUS.addListener(SpookyAttributes::registerAttributes)

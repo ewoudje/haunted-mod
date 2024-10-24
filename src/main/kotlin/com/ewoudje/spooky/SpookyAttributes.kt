@@ -15,7 +15,7 @@ object SpookyAttributes {
     val REGISTRY = DeferredRegister.create(BuiltInRegistries.ATTRIBUTE, SpookyMod.ID)
 
     val SANITY = REGISTRY.register("player.sanity")
-        { -> RangedAttribute(SpookyMod.ID + ".attribute.sanity", 0.0, 0.0, 50.0) }
+        { -> RangedAttribute(SpookyMod.ID + ".attribute.sanity", 40.0, 0.0, 50.0) }
     val IN_FOG = REGISTRY.register("player.in_fog")
         { -> BooleanAttribute(SpookyMod.ID + ".attribute.in_fog", false) }
 
