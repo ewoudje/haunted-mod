@@ -19,7 +19,7 @@ public class MixinSpreadingSnowyDirtBlock {
     @Inject(method = "randomTick", at = @At("TAIL"))
     void haunted$randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, CallbackInfo ci) {
         if (level.getServer().overworld() != level) return;
-        if (random.nextDouble() < 0.1) {
+        if (random.nextDouble() < 0.15) {
             if (SpookyWorldState.Companion.getSpookyWorldState(level)
                     .getFogState()
                     .isInFog(new Vector3d(pos.getX(), pos.getY(), pos.getZ()))) {

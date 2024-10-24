@@ -2,8 +2,6 @@ package com.ewoudje.spooky.world.fog
 
 import com.ewoudje.spooky.SpookyMod.VECTOR3D_CODEC
 import com.ewoudje.spooky.SpookyMod.nullable
-import com.ewoudje.spooky.client.renderers.RollingFogRenderer
-import com.ewoudje.spooky.client.renderers.RollingFogRenderer.lastPosition
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
@@ -92,6 +90,11 @@ class FogState(
     }
 
     fun getFlatNormal() = Vector3d(direction.x.toDouble(), 0.0, direction.z.toDouble()).normalize()
+
+    fun distanceTo(pos: Vector3dc): Double {
+        val n = getFlatNormal()
+        return pos.sub(position, Vector3d()).dot(n)
+    }
 
     companion object {
         val STREAM_CODEC = StreamCodec.composite(

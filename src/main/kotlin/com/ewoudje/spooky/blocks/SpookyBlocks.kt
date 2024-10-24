@@ -42,9 +42,10 @@ object SpookyBlocks {
     }
 
     val CURSED_GRASS by REGISTRY.register("cursed_grass_block") { ->
-        SnowyDirtBlock(
+        CursedGrassBlock(
             Properties.of()
                 .mapColor(MapColor.GRASS)
+                .randomTicks()
                 .strength(0.6F)
                 .sound(SoundType.GRASS)
         )

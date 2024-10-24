@@ -57,13 +57,7 @@ object ClientFogHandler {
         val player = Minecraft.getInstance().player ?: throw IllegalStateException()
         val playerPos = player.position().toVector3d()
 
-        if (fog.position != null &&
-            playerPos.sub(fog.position)
-                .dot(
-                    fog.direction.x.toDouble(),
-                    fog.direction.y.toDouble(),
-                    fog.direction.z.toDouble()
-                ) < FOG_DISTANCE + fog.thickness) {
+        if (fog.position != null && fog.distanceTo(playerPos) < FOG_DISTANCE + fog.thickness) {
             if (lastFog == null) {
                 player.playSound(SpookySounds.LAUGHS)
             }
