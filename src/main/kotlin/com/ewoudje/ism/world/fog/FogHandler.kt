@@ -23,6 +23,7 @@ object FogHandler {
         val fog = level.ismWorldState.fogState
         val fogPos = fog.position
 
+        FogUnsealedSpawner.spawner?.tick(event.server.overworld())
         if (fogPos == null) {
             if (level.ismWorldState.isEvilGodFree && level.random.nextFloat() < 0.0001) {
                 val randomPlayer = level.randomPlayer ?: return
@@ -39,7 +40,7 @@ object FogHandler {
 
         fog.position = fogPos.add(fog.velocity)
 
-        FogUnsealedSpawner.spawner?.tick(event.server.overworld())
+
 
         if (tickCounter >= 5 && fog.consumeNetworkDirty()) {
             sendFogUpdate(level, fog)
@@ -55,7 +56,7 @@ object FogHandler {
         }
 
         val found = level.players().firstOrNull { p ->
-            fog.distanceTo(p.position().toVector3d()) < 512 + fog.thickness
+            fog.distanceTo(p.position().toVector3d()) < 512
         }
 
         if (found == null) {

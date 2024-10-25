@@ -9,6 +9,7 @@ import org.joml.Vector3d
 import org.joml.Vector3dc
 import org.joml.Vector3f
 import thedarkcolour.kotlinforforge.neoforge.forge.vectorutil.v3d.toVector3d
+import kotlin.math.abs
 
 class FogState(
     position: Vector3d? = null,
@@ -93,7 +94,7 @@ class FogState(
 
     fun distanceTo(pos: Vector3dc): Double {
         val n = getFlatNormal()
-        return pos.sub(position, Vector3d()).dot(n)
+        return abs(pos.sub(position, Vector3d()).dot(n)) - thickness
     }
 
     companion object {
