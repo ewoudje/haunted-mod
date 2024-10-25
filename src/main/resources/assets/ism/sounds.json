@@ -1,0 +1,40 @@
+{
+  "god_unsealed": {
+    "subtitle": "ism.god_unsealed",
+    "sounds": [
+      "ism:the_bells"
+    ]
+  },
+  "whispers": {
+    "subtitle": "ism.whispers",
+    "sounds": [
+      "ism:whisper1",
+      "ism:whisper2",
+      "ism:whisper3"
+    ]
+  },
+  "laughs": {
+    "subtitle": "ism.laughs",
+    "sounds": [
+      "ism:laughs"
+    ]
+  },
+  "sliding_open1": {
+    "subtitle": "ism.sliding_open",
+    "sounds": [
+      "ism:sliding_open1"
+    ]
+  },
+  "sliding_open2": {
+    "subtitle": "ism.sliding_open",
+    "sounds": [
+      "ism:sliding_open1"
+    ]
+  },
+  "rotating_open1": {
+    "subtitle": "ism.rotating_open",
+    "sounds": [
+      "ism:sliding_open1"
+    ]
+  }
+}

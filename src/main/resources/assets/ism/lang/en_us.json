@@ -1,0 +1,19 @@
+{
+  "block.ism.seal_hacker": "Seal Hacker",
+  "item.ism.engraved_diamond": "Engraved diamond",
+  "item.ism.redstone_engraved_diamond": "Redstone Infused Diamoned",
+  "item.ism.engraving_tool": "Engraving Tool",
+  "item.ism.unseal_note": "Note of unsealing",
+  "item.ism.seal_smeller": "Seal Smeller",
+  "item.ism.seal_smeller.lore1": "Might sometimes smell something different",
+  "item.ism.seal_smeller.lore2": "Once figured out it will correct itself",
+  "item.ism.sad_seed": "Seed of sadness",
+  "item.ism.sad_fruit": "Sad fruit",
+  "effect.ism.sad": "Sad",
+  "advancements.ism.root.title": "The beginning of a friend?",
+  "advancements.ism.root.description": "You found a note that describes the way of unsealing a friend from a god-grade seal?",
+  "advancements.ism.sad_seed.title": "Sadness in a seed",
+  "advancements.ism.sad_seed.description": "You found a seed that holds sadness",
+  "advancements.ism.sad_fruit.title": "Hungry for tears?",
+  "advancements.ism.sad_fruit.description": "You are very sad now, makes you more lucky and better underwater"
+}

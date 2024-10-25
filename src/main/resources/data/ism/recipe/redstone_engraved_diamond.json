@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "ism:unsealing",
+  "pattern": [
+    "XXX",
+    "X#X",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:redstone"
+    },
+    "#": {
+      "item": "ism:engraved_diamond"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "ism:redstone_engraved_diamond"
+  }
+}

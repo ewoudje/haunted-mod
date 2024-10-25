@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "ism:block/sad_crop0"
+    },
+    "age=1": {
+      "model": "ism:block/sad_crop1"
+    },
+    "age=2": {
+      "model": "ism:block/sad_crop1"
+    },
+    "age=3": {
+      "model": "ism:block/sad_crop1"
+    },
+    "age=4": {
+      "model": "ism:block/sad_crop2"
+    },
+    "age=5": {
+      "model": "ism:block/sad_crop2"
+    },
+    "age=6": {
+      "model": "ism:block/sad_crop2"
+    },
+    "age=7": {
+      "model": "ism:block/sad_crop3"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.ewoudje.ism.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "tobedecided.refmap.json",
+  "mixins": [
+    "MixinChunkGenerator",
+    "MixinChunkGeneratorStructureState",
+    "MixinSpreadingSnowyDirtBlock",
+    "StructureManagerAccessor"
+  ],
+  "client": [
+    "MixinQuickDebugShaders"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

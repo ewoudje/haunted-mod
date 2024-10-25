@@ -1,0 +1,35 @@
+{
+  "parent": "ism:root",
+  "criteria": {
+    "sad_seed": {
+      "conditions": {
+        "items": [
+          {
+            "items": "ism:sad_seed"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.ism.sad_seed.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "ism:sad_seed"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.ism.sad_seed.title"
+    }
+  },
+  "requirements": [
+    [
+      "sad_seed"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

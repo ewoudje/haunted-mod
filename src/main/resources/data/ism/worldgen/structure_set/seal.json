@@ -1,0 +1,15 @@
+{
+  "placement": {
+    "type": "ism:single_placement",
+    "salt": 0,
+    "minDistance": 100,
+    "maxDistance": 200,
+    "uuid": [ 23480, 10932392]
+  },
+  "structures": [
+    {
+      "structure": "ism:seal",
+      "weight": 1
+    }
+  ]
+}

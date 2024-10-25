@@ -1,0 +1,6 @@
+{
+  "type": "ism:evil_god_seal",
+  "biomes": "#ism:has_structure/seal",
+  "spawn_overrides": {},
+  "step": "surface_structures"
+}

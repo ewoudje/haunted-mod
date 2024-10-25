@@ -1,15 +1,15 @@
 {
   "replace": false,
   "entries": [
-    "haunted:abandoned_mineshaft",
-    "haunted:ancient_city",
-    "haunted:buried_treasure",
-    "haunted:desert_pyramid",
-    "haunted:jungle_temple",
-    "haunted:pillager_outpost",
-    "haunted:ruined_portal",
-    "haunted:shipwreck_supply",
-    "haunted:stronghold_library",
-    "haunted:underwater_ruin_small"
+    "ism:abandoned_mineshaft",
+    "ism:ancient_city",
+    "ism:buried_treasure",
+    "ism:desert_pyramid",
+    "ism:jungle_temple",
+    "ism:pillager_outpost",
+    "ism:ruined_portal",
+    "ism:shipwreck_supply",
+    "ism:stronghold_library",
+    "ism:underwater_ruin_small"
   ]
 }

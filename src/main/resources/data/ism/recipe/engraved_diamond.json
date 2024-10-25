@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "ism:unsealing",
+  "ingredients": [
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "ism:engraving_tool"
+    },
+    {
+      "item": "ism:unseal_note"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "ism:engraved_diamond"
+  }
+}

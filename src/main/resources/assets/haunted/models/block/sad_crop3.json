@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/stem_growth7",
-  "render_type": "cutout",
-  "textures": {
-    "stem": "haunted:block/sad_crop_flowering"
-  }
-}

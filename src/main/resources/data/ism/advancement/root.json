@@ -1,0 +1,44 @@
+{
+  "criteria": {
+    "unseal_note": {
+      "conditions": {
+        "items": [
+          {
+            "items": "ism:unseal_note"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": {
+      "translate": "advancements.ism.root.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "ism:unseal_note"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.ism.root.title"
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "ism:engraved_diamond",
+      "ism:engraving_tool",
+      "ism:redstone_engraved_diamond",
+      "ism:seal_hacker",
+      "ism:seal_smeller"
+    ]
+  },
+  "requirements": [
+    [
+      "unseal_note"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

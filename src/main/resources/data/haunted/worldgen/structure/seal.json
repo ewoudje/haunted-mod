@@ -1,6 +1,0 @@
-{
-  "type": "haunted:evil_god_seal",
-  "biomes": "#haunted:has_structure/seal",
-  "spawn_overrides": {},
-  "step": "surface_structures"
-}
