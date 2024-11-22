@@ -81,11 +81,10 @@ void outsideFog() {
     float fogExtension;
     float sampleLength;
 
-
     float sampleRangeStart = max(ToPlaneDistance, 0);
     float sampleRangeSize = min(secondPlaneDistance - sampleRangeStart, WorldDepth);
 
-    const int sampleAmount = 50;
+    const int sampleAmount = 40;
     const float invSampleAmount = 1.0 / float(sampleAmount);
     for (int i = 0; i < sampleAmount; i++)
     {

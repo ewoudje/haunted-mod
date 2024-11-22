@@ -47,6 +47,8 @@ public class MixinChunkGenerator {
             d2 = rPos.distSqr(pos);
         }
 
+        ((ExtraChunkGeneratorStructureState) state).setData(data);
+
         synchronized (data) {
             for (Holder<Structure> s : structures) {
                 for (StructurePlacement p : state.getPlacementsForStructure(s)) {
@@ -73,7 +75,6 @@ public class MixinChunkGenerator {
             }
         }
 
-        ((ExtraChunkGeneratorStructureState) state).setData(data);
         if (rPos == null && result == null) return null;
         return Pair.of(rPos, result);
     }
@@ -84,6 +85,9 @@ public class MixinChunkGenerator {
         SinglePlacementData data = IsmWorldState.Companion.getIsmWorldState(source.level).getSinglePlacementData();
         var state = source.getGeneratorState();
         var placements = state.getPlacementsForStructure(structureSelectionEntry.structure());
+
+        ((ExtraChunkGeneratorStructureState) state).setData(data);
+
         synchronized (data) {
             for (var placement : placements) {
                 if (placement instanceof SingleStructurePlacement single) {
@@ -105,7 +109,5 @@ public class MixinChunkGenerator {
                 }
             }
         }
-
-        ((ExtraChunkGeneratorStructureState) state).setData(data);
     }
 }
